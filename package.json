@@ -9,25 +9,27 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@ai-sdk/anthropic": "latest",
+        "@ai-sdk/google": "latest",
+        "@ai-sdk/openai": "latest",
+        "@huggingface/transformers": "^3.8.1",
+        "ai": "latest",
+        "clsx": "latest",
+        "compromise": "^14.14.5",
+        "framer-motion": "latest",
+        "lucide-react": "latest",
         "next": "latest",
         "react": "latest",
         "react-dom": "latest",
-        "lucide-react": "latest",
-        "framer-motion": "latest",
-        "clsx": "latest",
         "tailwind-merge": "latest",
-        "ai": "latest",
-        "@ai-sdk/openai": "latest",
-        "@ai-sdk/google": "latest",
-        "@ai-sdk/anthropic": "latest",
         "zod": "latest"
     },
     "devDependencies": {
-        "typescript": "latest",
         "@types/node": "latest",
         "@types/react": "latest",
         "@types/react-dom": "latest",
         "eslint": "latest",
-        "eslint-config-next": "latest"
+        "eslint-config-next": "latest",
+        "typescript": "latest"
     }
 }

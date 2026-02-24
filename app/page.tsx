@@ -6,238 +6,238 @@ import { Shield, AlertTriangle, CheckCircle, FileText, BarChart3, Search, Activi
 import { VerificationResult, Claim } from '../lib/risk-engine';
 
 export default function Home() {
-    const [output, setOutput] = useState('');
-    const [domain, setDomain] = useState('legal');
-    const [loading, setLoading] = useState(false);
-    const [result, setResult] = useState<VerificationResult | null>(null);
+  const [output, setOutput] = useState('');
+  const [domain, setDomain] = useState('legal');
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<VerificationResult | null>(null);
 
-    const handleVerify = async () => {
-        if (!output) return;
-        setLoading(true);
-        try {
-            const resp = await fetch('/api/risk-score', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ output, domain })
-            });
-            const data = await resp.json();
-            setResult(data);
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    };
+  const handleVerify = async () => {
+    if (!output) return;
+    setLoading(true);
+    try {
+      const resp = await fetch('/api/risk-score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ output, domain })
+      });
+      const data = await resp.json();
+      setResult(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return (
-        <main className="container">
-            <div className="background-blobs">
-                <div className="blob blob-1"></div>
-                <div className="blob blob-2"></div>
+  return (
+    <main className="container">
+      <div className="background-blobs">
+        <div className="blob blob-1"></div>
+        <div className="blob blob-2"></div>
+      </div>
+
+      <header className="header animate-fade-in">
+        <div className="logo">
+          <div className="logo-icon glass glow-heavy">
+            <Shield size={20} className="stroke-primary" />
+          </div>
+          <span className="logo-text text-gradient font-bold">TrustShield AI</span>
+        </div>
+        <nav className="nav-desktop">
+          <span className="nav-link active">Risk Engine</span>
+          <span className="nav-link">Audit Trace</span>
+          <span className="nav-link">Compliance</span>
+          <div className="nav-divider"></div>
+          <button className="btn-ghost">
+            <Lock size={14} />
+            <span>Enterprise Gateway</span>
+          </button>
+        </nav>
+      </header>
+
+      <section className="hero">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="badge-wrapper">
+            <span className="status-badge glass">
+              <span className="dot animate-pulse"></span>
+              EU AI Act Compliant Ready
+            </span>
+          </div>
+          <h1>The Governance Layer for <br /><span className="text-gradient">Generative AI</span></h1>
+          <p className="subtitle">
+            Extract factual claims, identify evidence, and calculate cross-model variance <br />
+            to ensure legally defensible AI outputs in regulated industries.
+          </p>
+        </motion.div>
+      </section>
+
+      <div className="dashboard-grid">
+        <div className="input-section">
+          <motion.div
+            className="card glass p-6"
+            whileHover={{ y: -5 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <div className="card-header">
+              <div className="icon-box primary">
+                <FileText size={18} />
+              </div>
+              <h3>Analyze Output</h3>
             </div>
+            <p className="card-desc">Paste the AI-generated response to verify factual accuracy and risk.</p>
 
-            <header className="header animate-fade-in">
-                <div className="logo">
-                    <div className="logo-icon glass glow-heavy">
-                        <Shield size={20} className="stroke-primary" />
-                    </div>
-                    <span className="logo-text text-gradient font-bold">TrustShield AI</span>
-                </div>
-                <nav className="nav-desktop">
-                    <span className="nav-link active">Risk Engine</span>
-                    <span className="nav-link">Audit Trace</span>
-                    <span className="nav-link">Compliance</span>
-                    <div className="nav-divider"></div>
-                    <button className="btn-ghost">
-                        <Lock size={14} />
-                        <span>Enterprise Gateway</span>
-                    </button>
-                </nav>
-            </header>
+            <textarea
+              className="custom-textarea"
+              placeholder="Ex: 'The EU AI Act classifies many enterprise AI uses as high-risk systems...'"
+              value={output}
+              onChange={(e) => setOutput(e.target.value)}
+            />
 
-            <section className="hero">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                >
-                    <div className="badge-wrapper">
-                        <span className="status-badge glass">
-                            <span className="dot animate-pulse"></span>
-                            EU AI Act Compliant Ready
-                        </span>
-                    </div>
-                    <h1>The Governance Layer for <br /><span className="text-gradient">Generative AI</span></h1>
-                    <p className="subtitle">
-                        Extract factual claims, identify evidence, and calculate cross-model variance <br />
-                        to ensure legally defensible AI outputs in regulated industries.
-                    </p>
-                </motion.div>
-            </section>
-
-            <div className="dashboard-grid">
-                <div className="input-section">
-                    <motion.div
-                        className="card glass p-6"
-                        whileHover={{ y: -5 }}
-                        transition={{ type: "spring", stiffness: 300 }}
-                    >
-                        <div className="card-header">
-                            <div className="icon-box primary">
-                                <FileText size={18} />
-                            </div>
-                            <h3>Analyze Output</h3>
-                        </div>
-                        <p className="card-desc">Paste the AI-generated response to verify factual accuracy and risk.</p>
-
-                        <textarea
-                            className="custom-textarea"
-                            placeholder="Ex: 'The EU AI Act classifies many enterprise AI uses as high-risk systems...'"
-                            value={output}
-                            onChange={(e) => setOutput(e.target.value)}
-                        />
-
-                        <div className="controls">
-                            <div className="select-wrapper">
-                                <BookOpen size={16} className="select-icon" />
-                                <select value={domain} onChange={(e) => setDomain(e.target.value)}>
-                                    <option value="legal">Legal Opinion</option>
-                                    <option value="financial">Financial Analysis</option>
-                                    <option value="medical">Biotech / Diagnostics</option>
-                                    <option value="compliance">Corporate Governance</option>
-                                </select>
-                            </div>
-                            <button
-                                className={`btn-action ${loading ? 'loading' : ''}`}
-                                onClick={handleVerify}
-                                disabled={loading || !output}
-                            >
-                                {loading ? (
-                                    <>
-                                        <Cpu className="animate-spin" size={18} />
-                                        <span>Processing Layer...</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <span>Execute Verification</span>
-                                        <ArrowRight size={18} />
-                                    </>
-                                )}
-                            </button>
-                        </div>
-                    </motion.div>
-                </div>
-
-                <div className="visual-section">
-                    <AnimatePresence mode="wait">
-                        {!result && !loading && (
-                            <motion.div
-                                key="empty"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                className="empty-state glass"
-                            >
-                                <Search size={48} strokeWidth={1} />
-                                <p>Awaiting risk telemetry input...</p>
-                                <div className="shimmer-lines">
-                                    <div className="line"></div>
-                                    <div className="line short"></div>
-                                </div>
-                            </motion.div>
-                        )}
-
-                        {loading && (
-                            <motion.div
-                                key="loading"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                className="loading-state glass"
-                            >
-                                <div className="scanner"></div>
-                                <h3>Extracting Claims</h3>
-                                <p>NLI Validation & Cross-Model Verification in progress.</p>
-                            </motion.div>
-                        )}
-
-                        {result && !loading && (
-                            <motion.div
-                                key="result"
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                className="results-view"
-                            >
-                                <div className="stats-row">
-                                    <div className="stat-card glass flex-1">
-                                        <span className="stat-label">Risk Score</span>
-                                        <div className={`stat-value risk-${result.overallRisk > 0.6 ? 'high' : result.overallRisk > 0.3 ? 'medium' : 'low'}`}>
-                                            {(result.overallRisk * 100).toFixed(0)}%
-                                        </div>
-                                        <div className="progress-bg">
-                                            <motion.div
-                                                className="progress-fill"
-                                                initial={{ width: 0 }}
-                                                animate={{ width: `${result.overallRisk * 100}%` }}
-                                                transition={{ duration: 1 }}
-                                            ></motion.div>
-                                        </div>
-                                    </div>
-                                    <div className="stat-card glass flex-1">
-                                        <span className="stat-label">Variance</span>
-                                        <div className="stat-value secondary">
-                                            {(result.crossModelVariance * 100).toFixed(0)}%
-                                        </div>
-                                        <p className="stat-subtext">Epistemic Uncertainty</p>
-                                    </div>
-                                </div>
-
-                                <div className="claims-container glass">
-                                    <div className="claims-header">
-                                        <BarChart3 size={16} />
-                                        <span>Claim-Level Risk Map</span>
-                                    </div>
-                                    <div className="claims-scroll">
-                                        {result.claims.map((claim, i) => (
-                                            <motion.div
-                                                key={i}
-                                                initial={{ x: -20, opacity: 0 }}
-                                                animate={{ x: 0, opacity: 1 }}
-                                                transition={{ delay: i * 0.1 }}
-                                                className="claim-item"
-                                            >
-                                                <div className="claim-text-content">
-                                                    <p className="claim-body">{claim.text}</p>
-                                                    <div className="claim-tags">
-                                                        <span className={`tag-risk risk-${claim.riskScore > 0.5 ? 'high' : 'low'}`}>
-                                                            {claim.riskScore > 0.5 ? 'High Risk' : 'Verified'}
-                                                        </span>
-                                                        {claim.speculativeKeywords.length > 0 && (
-                                                            <span className="tag-hedge">Hedged Language</span>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                                <div className="claim-score">
-                                                    {(claim.riskScore * 100).toFixed(0)}%
-                                                </div>
-                                            </motion.div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div className="audit-footer glass">
-                                    <Activity size={14} />
-                                    <span>Audit Code: TR-{Math.random().toString(36).substring(7).toUpperCase()}</span>
-                                    <div className="flex-grow"></div>
-                                    <button className="btn-text">Download Report</button>
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
+            <div className="controls">
+              <div className="select-wrapper">
+                <BookOpen size={16} className="select-icon" />
+                <select value={domain} onChange={(e) => setDomain(e.target.value)}>
+                  <option value="legal">Legal Opinion</option>
+                  <option value="financial">Financial Analysis</option>
+                  <option value="medical">Biotech / Diagnostics</option>
+                  <option value="compliance">Corporate Governance</option>
+                </select>
+              </div>
+              <button
+                className={`btn-action ${loading ? 'loading' : ''}`}
+                onClick={handleVerify}
+                disabled={loading || !output}
+              >
+                {loading ? (
+                  <>
+                    <Cpu className="animate-spin" size={18} />
+                    <span>Processing Layer...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Execute Verification</span>
+                    <ArrowRight size={18} />
+                  </>
+                )}
+              </button>
             </div>
+          </motion.div>
+        </div>
 
-            <style jsx>{`
+        <div className="visual-section">
+          <AnimatePresence mode="wait">
+            {!result && !loading && (
+              <motion.div
+                key="empty"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="empty-state glass"
+              >
+                <Search size={48} strokeWidth={1} />
+                <p>Awaiting risk telemetry input...</p>
+                <div className="shimmer-lines">
+                  <div className="line"></div>
+                  <div className="line short"></div>
+                </div>
+              </motion.div>
+            )}
+
+            {loading && (
+              <motion.div
+                key="loading"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="loading-state glass"
+              >
+                <div className="scanner"></div>
+                <h3>Hybrid Analysis</h3>
+                <p>NLP Heuristics + Edge-AI Logic in progress.</p>
+              </motion.div>
+            )}
+
+            {result && !loading && (
+              <motion.div
+                key="result"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="results-view"
+              >
+                <div className="stats-row">
+                  <div className="stat-card glass flex-1">
+                    <span className="stat-label">Risk Score</span>
+                    <div className={`stat-value risk-${result.overallRisk > 0.6 ? 'high' : result.overallRisk > 0.3 ? 'medium' : 'low'}`}>
+                      {(result.overallRisk * 100).toFixed(0)}%
+                    </div>
+                    <div className="progress-bg">
+                      <motion.div
+                        className="progress-fill"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${result.overallRisk * 100}%` }}
+                        transition={{ duration: 1 }}
+                      ></motion.div>
+                    </div>
+                  </div>
+                  <div className="stat-card glass flex-1">
+                    <span className="stat-label">Model Depth</span>
+                    <div className="stat-value secondary">
+                      {(result.crossModelVariance * 100).toFixed(0)}%
+                    </div>
+                    <p className="stat-subtext">Semantic Resolution</p>
+                  </div>
+                </div>
+
+                <div className="claims-container glass">
+                  <div className="claims-header">
+                    <BarChart3 size={16} />
+                    <span>Claim-Level Risk Map</span>
+                  </div>
+                  <div className="claims-scroll">
+                    {result.claims.map((claim, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: i * 0.1 }}
+                        className="claim-item"
+                      >
+                        <div className="claim-text-content">
+                          <p className="claim-body">{claim.text}</p>
+                          <div className="claim-tags">
+                            <span className={`tag-risk risk-${claim.riskScore > 0.5 ? 'high' : 'low'}`}>
+                              {claim.riskScore > 0.5 ? 'High Risk' : 'Verified'}
+                            </span>
+                            {claim.speculativeKeywords.length > 0 && (
+                              <span className="tag-hedge">Hedged Language</span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="claim-score">
+                          {(claim.riskScore * 100).toFixed(0)}%
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="audit-footer glass">
+                  <Activity size={14} />
+                  <pre className="audit-pre">{result.auditReport}</pre>
+                  <div className="flex-grow"></div>
+                  <div className="method-tag">{result.method}</div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+
+      <style jsx>{`
         .container {
           position: relative;
           max-width: 1400px;
@@ -621,6 +621,25 @@ export default function Home() {
           color: #64748b;
         }
 
+        .audit-pre {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.7rem;
+          line-height: 1.4;
+          color: #94a3b8;
+          white-space: pre-wrap;
+        }
+
+        .method-tag {
+          font-size: 0.6rem;
+          text-transform: uppercase;
+          padding: 0.25rem 0.5rem;
+          background: rgba(59, 130, 246, 0.2);
+          border: 1px solid var(--primary);
+          border-radius: 4px;
+          color: var(--primary);
+          font-weight: 700;
+        }
+
         .btn-text {
           background: transparent;
           border: none;
@@ -642,6 +661,6 @@ export default function Home() {
           h1 { font-size: 3rem; }
         }
       `}</style>
-        </main>
-    );
+    </main>
+  );
 }
