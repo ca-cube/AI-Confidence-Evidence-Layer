@@ -48,6 +48,7 @@ export class RiskEngine {
      * Main entry point
      */
     async verify(output: string, domain: string, context?: string): Promise<VerificationResult> {
+        const start = Date.now();
         // 1. Deterministic Claim Extraction using NLP (Instant)
         const claims = this.extractClaimsDeterministic(output);
 
@@ -80,6 +81,7 @@ export class RiskEngine {
 
         // 5. Aggregate Overall Risk
         const overallRisk = this.calculateOverallRisk(assessedClaims, speculationDensity);
+        const duration = Date.now() - start;
 
         return {
             input: { output, domain, context },
@@ -88,7 +90,7 @@ export class RiskEngine {
             claims: assessedClaims,
             crossModelVariance: semanticRisk,
             speculationDensity,
-            auditReport: this.generateAuditReport(assessedClaims, overallRisk, domain, semanticRisk),
+            auditReport: this.generateAuditReport(assessedClaims, overallRisk, domain, semanticRisk, duration),
             timestamp: new Date().toISOString(),
             method: 'hybrid'
         };
@@ -148,7 +150,7 @@ export class RiskEngine {
         }];
     }
 
-    private generateAuditReport(claims: Claim[], risk: number, domain: string, semanticDepth: number): string {
+    private generateAuditReport(claims: Claim[], risk: number, domain: string, semanticDepth: number, duration: number): string {
         const highRiskCount = claims.filter(c => c.riskScore > 0.6).length;
         return `HYBRID AUDIT LOG\n` +
             `----------------------\n` +
@@ -156,6 +158,7 @@ export class RiskEngine {
             `Claims Scanned: ${claims.length}\n` +
             `High Risk Claims: ${highRiskCount}\n` +
             `Semantic Depth: ${(semanticDepth * 100).toFixed(1)}%\n` +
+            `Processing Speed: ${duration}ms\n` +
             `Confidence Score: ${(100 - (risk * 100)).toFixed(1)}%\n` +
             `Logic: NLP Analysis + Edge-AI Semantic Validation.`;
     }

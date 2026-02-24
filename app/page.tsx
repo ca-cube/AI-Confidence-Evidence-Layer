@@ -55,7 +55,7 @@ export default function Home() {
         </nav>
       </header>
 
-      <section className="hero">
+      <section className="hero" id="hero-section">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -64,13 +64,13 @@ export default function Home() {
           <div className="badge-wrapper">
             <span className="status-badge glass">
               <span className="dot animate-pulse"></span>
-              EU AI Act Compliant Ready
+              v1.0 Hybrid Engine Online
             </span>
           </div>
           <h1>The Governance Layer for <br /><span className="text-gradient">Generative AI</span></h1>
           <p className="subtitle">
-            Extract factual claims, identify evidence, and calculate cross-model variance <br />
-            to ensure legally defensible AI outputs in regulated industries.
+            Extract factual claims and calculate risk density <br />
+            using pattern heuristics and edge-based semantic verification.
           </p>
         </motion.div>
       </section>
@@ -97,10 +97,15 @@ export default function Home() {
               onChange={(e) => setOutput(e.target.value)}
             />
 
-            <div className="controls">
+            <div className="controls" id="verification-controls">
               <div className="select-wrapper">
                 <BookOpen size={16} className="select-icon" />
-                <select value={domain} onChange={(e) => setDomain(e.target.value)}>
+                <select
+                  id="domain-selector"
+                  value={domain}
+                  onChange={(e) => setDomain(e.target.value)}
+                  aria-label="Select Domain"
+                >
                   <option value="legal">Legal Opinion</option>
                   <option value="financial">Financial Analysis</option>
                   <option value="medical">Biotech / Diagnostics</option>
@@ -108,6 +113,7 @@ export default function Home() {
                 </select>
               </div>
               <button
+                id="execute-btn"
                 className={`btn-action ${loading ? 'loading' : ''}`}
                 onClick={handleVerify}
                 disabled={loading || !output}
@@ -380,7 +386,7 @@ export default function Home() {
 
         .dashboard-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: 1.2fr 1fr;
           gap: 3rem;
           margin-bottom: 4rem;
         }
@@ -431,12 +437,14 @@ export default function Home() {
 
         .controls {
           display: flex;
+          align-items: stretch;
           gap: 1rem;
+          width: 100%;
         }
 
         .select-wrapper {
           position: relative;
-          flex: 1;
+          flex: 0 0 180px; /* Fixed width for select to prevent jumping */
         }
 
         .select-icon {
@@ -446,10 +454,12 @@ export default function Home() {
           transform: translateY(-50%);
           color: #64748b;
           pointer-events: none;
+          z-index: 10;
         }
 
         select {
           width: 100%;
+          height: 100%;
           padding: 0.75rem 0.75rem 0.75rem 2.5rem;
           background: rgba(255,255,255,0.05);
           border: 1px solid var(--card-border);
@@ -457,6 +467,7 @@ export default function Home() {
           border-radius: 10px;
           appearance: none;
           cursor: pointer;
+          font-size: 0.9rem;
         }
 
         .btn-action {
